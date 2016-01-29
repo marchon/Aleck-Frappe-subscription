@@ -305,3 +305,74 @@ frappe.UPSShippingRates = Class.extend({
         });
     },
 });
+
+frappe.ui.form.on("Delivery Note", {
+    refresh: function(frm){
+        cur_frm.add_custom_button(__('Print Shipping Labels'), cur_frm.cscript.print_shipping_labels);
+    },
+    onload: function(frm){
+        $('<div style="display:none" id="qz-status" bgcolor="#FFF380">\
+            <div style="margin: 0 1em;"><h1 id="title" style="margin:0;">\
+            QZ Print Plugin</h1></div>\
+            <input id="printer" type="text" value="zebra" size="15"><br />\
+            <p>Copies<p><input type="text" id="copies" size="8" value="1" />\
+            <input type="button" id="list_ports" onClick="listSerialPorts()" value="List Serial Ports" /><br />\
+            <input type="text" id="port_name" size="8" /><br />\
+            <input type="button" id="open_port"  onClick="openSerialPort()" value="Open Port" /><br />\
+            <input type="button" id="send_data" onClick="sendSerialData()" value="Send Port Cmd" /><br />\
+            <input type="button" id="close_port"  onClick="closeSerialPort()" value="Close Port" /><br />\
+            <hr /><h2>Misc</h2>\
+            <input type="button" onClick="listNetworkInfo()" value="List Network Info" /><br /></div>').appendTo(frm.body);
+       
+        window["deployQZ"] = typeof(deployQZ) == "function" ? deployQZ : this.deployQZApplet;
+
+        deployQZ();
+    }
+});
+
+cur_frm.cscript.print_shipping_labels = function(){
+    findPrinter()
+}
+
+
+/***************************************************************************
+ * Prototype function for finding the closest match to a printer name.
+ * Usage:
+ *    qz.findPrinter('zebra');
+ *    window['qzDoneFinding'] = function() { frappe.msgprint(qz.getPrinter()); };
+ ***************************************************************************/
+function findPrinter(name) {
+    // Get printer name from input box
+    var p = document.getElementById('printer') || 'zebra';
+    if (name) {
+        p.value = name;
+    }
+
+    if (isLoaded()) {
+
+        // Automatically gets called when "qz.findPrinter()" is finished.
+        window['qzDoneFinding'] = function() {
+            var p = document.getElementById('printer');
+            var printer = qz.getPrinter();
+
+            // Alert the printer name to user
+            frappe.msgprint(printer !== null ? 'Printer found: "' + printer +
+            '" after searching for "' + p.value + '"' : 'Printer "' +
+            p.value + '" not found.');
+
+            // Remove reference to this function
+            window['qzDoneFinding'] = null;
+
+            // print zpl labels
+            print_ups_lables()
+        };
+        // Searches for locally installed printer with specified name
+        qz.findPrinter(p.value);
+    }
+}
+
+print_ups_lables = function(){
+    $.each(cur_frm.doc.packing_slip_details, function(idx, row){
+        printZPL(row.shipping_lables)
+    })
+}

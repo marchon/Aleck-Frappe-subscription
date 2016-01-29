@@ -1,0 +1,7 @@
+{
+	"js/qz.min.js":[
+		"public/js/qz-utils.js",
+		"public/js/deployjs.js",
+		"public/js/qz-websocket.js"
+	]
+}

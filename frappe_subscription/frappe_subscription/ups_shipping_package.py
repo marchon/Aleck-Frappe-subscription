@@ -219,7 +219,7 @@ def save_tracking_number_and_shipping_labels(dn, shipment_info):
         if info:
             row.tracking_id = info.get("tracking_id")
             # row.shipping_label = "<img src='data:image/gif;base64,%s' class='ups-label'/>"%(info.get('label'))
-            # row.shipping_label = info.get('label')
+            row.shipping_label = info.get('label')
             row.label_path = save_shipping_labels_to_file(
                                 dn.name,
                                 info.get('label'),
