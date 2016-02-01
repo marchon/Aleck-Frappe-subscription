@@ -44,11 +44,13 @@ function connectWebsocket(port) {
         var websocket = new WebSocket(qzConfig.protocol[qzConfig.protocolIndex] + qzConfig.uri + ":" + port);
     }
     catch(e) {
+        window["is_qz_running"] = true;
         console.error(e);
     }
 
     if (websocket != null) {
         websocket.valid = false;
+        window["is_qz_running"] = true;
 
         websocket.onopen = function(evt) {
             console.log('Open:');
@@ -93,6 +95,7 @@ function connectWebsocket(port) {
                         qzConfig.portIndex = 0;
                         connectWebsocket(qzConfig.ports[qzConfig.portIndex] + qzConfig.protocolIndex);
                     } else {
+                        window["is_qz_running"] = false;
                         qzNoConnection();
                     }
                 }
@@ -101,6 +104,7 @@ function connectWebsocket(port) {
 
     } else {
         console.warn('Websocket connection failed');
+        window["is_qz_running"] = false;
         websocket = null;
         qzNoConnection();
     }

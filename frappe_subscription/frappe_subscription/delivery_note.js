@@ -335,7 +335,10 @@ frappe.ui.form.on("Delivery Note", {
 });
 
 cur_frm.cscript.print_shipping_labels = function(){
-    findPrinter()
+    if(window.is_qz_running)
+        findPrinter();
+    else
+        frappe.msgprint("Unable to connect to QZ, is it running?");
 }
 
 
