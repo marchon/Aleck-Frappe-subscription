@@ -159,8 +159,9 @@ cur_frm.cscript.is_manual_shipping = function(doc,cdt,cdn){
 cur_frm.cscript.carrier_shipping_rate = function(doc,cdt,cdn){
     if(doc.carrier_shipping_rate <= 0 && doc.is_manual_shipping == 1)
         frappe.msgprint("Invalid Shipping Rate")
-    else
+    else{
         set_up_taxes_and_charges(service, doc.carrier_shipping_rate)
+    }
 }
 
 set_child_fields_to_readonly = function(val){
@@ -308,7 +309,8 @@ frappe.UPSShippingRates = Class.extend({
 
 frappe.ui.form.on("Delivery Note", {
     refresh: function(frm){
-        cur_frm.add_custom_button(__('Print Shipping Labels'), cur_frm.cscript.print_shipping_labels);
+        if(frm.doc.is_manual_shipping == 0 && frm.doc.docstatus == 1)
+            cur_frm.add_custom_button(__('Print Shipping Labels'), cur_frm.cscript.print_shipping_labels);
     },
     onload: function(frm){
         $('<div style="display:none" id="qz-status" bgcolor="#FFF380">\
