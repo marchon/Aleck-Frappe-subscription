@@ -136,7 +136,7 @@ def add_shipping_charges(dn_name=None, service_code=None, shipping_rate=None):
 
         #compare to minimum shipping charge
         if total_charge < defaults.get("minimum_shipping_charge"):
-            total_charge = defaults.get("minimum_shipping_charge")
+            total_charge = flt(defaults.get("minimum_shipping_charge"))
 
         for row in dn.taxes:
             condition = (row.charge_type == "Actual" and row.description == "Shipping Charges"
