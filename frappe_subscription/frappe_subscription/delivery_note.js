@@ -313,22 +313,24 @@ frappe.ui.form.on("Delivery Note", {
             cur_frm.add_custom_button(__('Print Shipping Labels'), cur_frm.cscript.print_shipping_labels);
     },
     onload: function(frm){
-        $('<div style="display:none" id="qz-status" bgcolor="#FFF380">\
-            <div style="margin: 0 1em;"><h1 id="title" style="margin:0;">\
-            QZ Print Plugin</h1></div>\
-            <input id="printer" type="text" value="zebra" size="15"><br />\
-            <p>Copies<p><input type="text" id="copies" size="8" value="1" />\
-            <input type="button" id="list_ports" onClick="listSerialPorts()" value="List Serial Ports" /><br />\
-            <input type="text" id="port_name" size="8" /><br />\
-            <input type="button" id="open_port"  onClick="openSerialPort()" value="Open Port" /><br />\
-            <input type="button" id="send_data" onClick="sendSerialData()" value="Send Port Cmd" /><br />\
-            <input type="button" id="close_port"  onClick="closeSerialPort()" value="Close Port" /><br />\
-            <hr /><h2>Misc</h2>\
-            <input type="button" onClick="listNetworkInfo()" value="List Network Info" /><br /></div>').appendTo(frm.body);
-       
-        window["deployQZ"] = typeof(deployQZ) == "function" ? deployQZ : this.deployQZApplet;
-
-        deployQZ();
+        if(frm.doc.is_manual_shipping == 0 && frm.doc.docstatus == 1){
+            $('<div style="display:none" id="qz-status" bgcolor="#FFF380">\
+                <div style="margin: 0 1em;"><h1 id="title" style="margin:0;">\
+                QZ Print Plugin</h1></div>\
+                <input id="printer" type="text" value="zebra" size="15"><br />\
+                <p>Copies<p><input type="text" id="copies" size="8" value="1" />\
+                <input type="button" id="list_ports" onClick="listSerialPorts()" value="List Serial Ports" /><br />\
+                <input type="text" id="port_name" size="8" /><br />\
+                <input type="button" id="open_port"  onClick="openSerialPort()" value="Open Port" /><br />\
+                <input type="button" id="send_data" onClick="sendSerialData()" value="Send Port Cmd" /><br />\
+                <input type="button" id="close_port"  onClick="closeSerialPort()" value="Close Port" /><br />\
+                <hr /><h2>Misc</h2>\
+                <input type="button" onClick="listNetworkInfo()" value="List Network Info" /><br /></div>').appendTo(frm.body);
+           
+            window["deployQZ"] = typeof(deployQZ) == "function" ? deployQZ : this.deployQZApplet;
+    
+            deployQZ();
+        }
     }
 });
 
