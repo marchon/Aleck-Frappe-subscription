@@ -1,5 +1,5 @@
 function deployQZApplet() {
-    console.log('Starting deploy of qz applet');
+    // console.log('Starting deploy of qz applet');
 
     var attributes = {id: "qz", code:'qz.PrintApplet.class',
         archive:'../qz-print.jar', width:1, height:1};
@@ -127,16 +127,16 @@ function qzReady() {
 
 function qzSocketError(event) {
     document.getElementById("qz-status").style.background = "#F5A9A9";
-    console.log('Error:');
-    console.log(event);
+    // console.log('Error:');
+    // console.log(event);
 
     frappe.msgprint("Connection had an error:\n"+ event.reason);
 }
 
 function qzSocketClose(event) {
     document.getElementById("qz-status").style.background = "#A0A0A0";
-    console.log('Close:');
-    console.log(event);
+    // console.log('Close:');
+    // console.log(event);
 
     frappe.msgprint("Connection was closed:\n"+ event.reason);
 }
@@ -888,7 +888,7 @@ function printHTML5Page() {
 function logFeatures() {
     if (isLoaded()) {
         var logging = qz.getLogPostScriptFeatures();
-        console.log(logging);
+        // console.log(logging);
         qz.setLogPostScriptFeatures(!logging);
         frappe.msgprint('Logging of PostScript printer capabilities to console set to "' + !logging + '"');
     }

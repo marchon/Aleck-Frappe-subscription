@@ -335,10 +335,10 @@ frappe.ui.form.on("Delivery Note", {
 });
 
 cur_frm.cscript.print_shipping_labels = function(){
-    if(window.is_qz_running)
-        findPrinter();
-    else
-        frappe.msgprint("Unable to connect to QZ, is it running?");
+    // if(window.is_qz_running)
+    findPrinter();
+    // else
+    //     frappe.msgprint("Unable to connect to QZ, is it running?");
 }
 
 
@@ -366,12 +366,13 @@ function findPrinter(name) {
             frappe.msgprint(printer !== null ? 'Printer found: "' + printer +
             '" after searching for "' + p.value + '"' : 'Printer "' +
             p.value + '" not found.');
+            
+            // print zpl labels
+            print_ups_lables()
 
             // Remove reference to this function
             window['qzDoneFinding'] = null;
 
-            // print zpl labels
-            print_ups_lables()
         };
         // Searches for locally installed printer with specified name
         qz.findPrinter(p.value);
@@ -380,6 +381,6 @@ function findPrinter(name) {
 
 print_ups_lables = function(){
     $.each(cur_frm.doc.packing_slip_details, function(idx, row){
-        printZPL(row.shipping_lables)
+        printZPL(row.shipping_label)
     })
 }
